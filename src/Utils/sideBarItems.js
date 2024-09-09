@@ -1,25 +1,25 @@
 export const SideBarItems = [
   {
     id: 1,
-    icon: "/dashboard_icons.png",
+    icon: "/dash2.png",
     title: "Dashboard",
     link: "/dashboard",
   },
   {
     id: 2,
-    icon: "/folder.png",
+    icon: "/folder3.png",
     title: "Projects",
     link: "/projects",
   },
   {
     id: 3,
-    icon: "/task1.png",
+    icon: "/task2.png",
     title: "Tasks",
     link: "/tasks",
   },
   {
     id: 4,
-    icon: "/calendar.png",
+    icon: "/calendar2.png",
     title: "Calendar",
     link: "/calendar",
   },
