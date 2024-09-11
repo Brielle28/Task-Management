@@ -7,7 +7,7 @@ const Layout = () => {
       <div className="w-[18%] h-screen pt-[25px] border-r-2">
         <Aside /> 
       </div>
-      <div  className="w-[50%]">
+      <div  className="w-[72%]">
         <Outlet />
       </div>
     </div>
