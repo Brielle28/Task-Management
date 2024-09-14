@@ -1,5 +1,6 @@
 import { FiFolderPlus } from "react-icons/fi";
 import RingUpBoxes from "./RingUpBoxes";
+import DashboardHistory from "./DashboardHistory";
 const Dashboard = () => {
   return (
     <div className="flex flex-col items-start justify-start mt-6 ">
@@ -22,7 +23,14 @@ const Dashboard = () => {
       </div>
 
       {/* Boxes showing totals of tasks, progress and done tasks */}
-      <div className="mt-[40px]"><RingUpBoxes/></div>
+      <div className="mt-[40px]">
+        <RingUpBoxes />
+      </div>
+
+      {/* dash board history  */}
+      <div className="mt-[50px] flex w-full">
+        <DashboardHistory />
+      </div>
     </div>
   );
 };

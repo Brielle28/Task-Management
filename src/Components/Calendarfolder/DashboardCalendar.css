@@ -1,0 +1,53 @@
+/* .task-dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin: 0 auto;
+    margin-top: 2px;
+  
+  
+  /* Add extra padding so the dot fits comfortably */
+  /* .react-calendar__tile {
+    position: relative;
+    padding-bottom: 10px;
+   */
+
+   /* Customize Calendar */
+.react-calendar {
+    border: none; /* Remove border */
+    background-color: #f4f4f4; /* Light background */
+    border-radius: 12px; /* Rounded corners */
+    padding: 10px;
+  }
+  
+  .react-calendar__tile {
+    height: 50px;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  .react-calendar__navigation button {
+    color: #0044cc;
+    font-weight: bold;
+  }
+  
+  .react-calendar__tile--now {
+    background-color: #0044cc; /* Current day background */
+    color: white; /* White text for the current day */
+    border-radius: 50%;
+  }
+  
+  .react-calendar__tile--now:hover {
+    background-color: #0033aa; /* Darken on hover */
+  }
+  
+  /* Task Dot Style */
+  .task-dot {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin: 2px auto;
+  }
+  
