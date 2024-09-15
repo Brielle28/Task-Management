@@ -23,7 +23,7 @@ const Dashboard = () => {
       </div>
 
       {/* Boxes showing totals of tasks, progress and done tasks */}
-      <div className="mt-[40px]">
+      <div className="mt-[20px]">
         <RingUpBoxes />
       </div>
 
