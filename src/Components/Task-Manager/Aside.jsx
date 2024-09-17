@@ -6,9 +6,9 @@ const Aside = () => {
   const location = useLocation(); // Get the current location (current route)
 
   return (
-    <aside>
+    <aside className=" fixed h-screen border-r-2 pr-4 ">
       <div className="flex flex-col items-start justify-center w-[100%] gap-10">
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 ">
           <img src="/diamond3.png" alt="logo" className="size-[26px] mt-2" />
           <h1 className="text-black font-extrabold text-[26px]">TaskMinder.</h1>
         </div>
