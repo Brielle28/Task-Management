@@ -1,6 +1,6 @@
-import { FiFolderPlus } from "react-icons/fi";
 import RingUpBoxes from "./RingUpBoxes";
 import DashboardHistory from "./DashboardHistory";
+import Button from "../../ButtonFolder/Button";
 const Dashboard = () => {
   return (
     <div className="flex flex-col items-start justify-start mt-6 ">
@@ -14,12 +14,7 @@ const Dashboard = () => {
             Have a bird eye view of your tasks{" "}
           </h5>
         </div>
-        <button className="flex flex-row items-center justify-center gap-3 bg-blue-500 px-7 py-2 rounded-[17px] mt-10">
-          <FiFolderPlus className="text-white " />
-          <h1 className="text-[12px] text-white font-Roboto mt-1">
-            Add a task
-          </h1>
-        </button>
+        <Button className="mt-10"/>
       </div>
 
       {/* Boxes showing totals of tasks, progress and done tasks */}
