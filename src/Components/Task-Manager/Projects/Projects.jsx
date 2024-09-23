@@ -142,161 +142,6 @@
 
 // export default Projects;
 
-// second instance of the code
-// import { useState, useEffect } from "react";
-// import { format } from "date-fns";
-// import { CiEdit } from "react-icons/ci";
-// import { MdDeleteForever } from "react-icons/md";
-// import { CiSearch } from "react-icons/ci";
-
-// // Simulate loading tasks from local storage or a service
-// const getTasksFromLocalStorage = () => {
-//   return JSON.parse(localStorage.getItem("tasks"));
-// };
-
-// const deleteTask = (id) => {
-//   const storedTasks = getTasksFromLocalStorage();
-//   const updatedTasks = storedTasks.filter((task) => task.id !== id);
-//   localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-// };
-
-// // const defaultTasks = [
-// //   // Your predefined tasks here
-// //   {
-// //     id: 1, // Add unique IDs for each task
-// //     date: "2024-08-15",
-// //     title: "Meeting with Team",
-// //     description:
-// //       "A one-hour meeting with the core project team to discuss the current status of all ongoing tasks...",
-// //     startTime: "2024-08-15T09:00:00",
-// //     endTime: "2024-08-15T10:00:00",
-// //   },
-// //   {
-// //     id: 2,
-// //     date: "2024-08-15",
-// //     title: "Desktop UI",
-// //     description:
-// //       "A dedicated work session to design, iterate, and refine the desktop interface of our application...",
-// //     startTime: "2024-08-15T10:00:00",
-// //     endTime: "2024-08-15T18:00:00",
-// //   },
-// //   // Add the rest of the tasks...
-// // ];
-
-// const Projects = () => {
-//   const [tasks, setTasks] = useState(getTasksFromLocalStorage());
-//   const [searchQuery, setSearchQuery] = useState("");
-
-//   useEffect(() => {
-//     // Update tasks whenever component loads
-//     setTasks(getTasksFromLocalStorage());
-//   }, []);
-
-//   console.log(tasks, "this is task from project");
-//   console.log("Start date:", tasks.startDate);
-//   console.log("End date:", tasks.endDate);
-
-//   // Function to delete a task
-//   const handleDelete = (id) => {
-//     deleteTask(id);
-//     setTasks(getTasksFromLocalStorage()); // Refresh tasks after deletion
-//   };
-
-//   // Placeholder function for editing a task
-//   const handleEdit = (id) => {
-//     alert(`Edit functionality for task ID: ${id}`);
-//     // You can add the modal or redirect logic for editing here
-//   };
-
-//   // Function to filter tasks based on search
-//   const filteredTasks = tasks.filter((task) =>
-//     task.title.toLowerCase().includes(searchQuery.toLowerCase())
-//   );
-
-//   const groupedTasks = filteredTasks.reduce((acc, task) => {
-//     const dateKey = format(new Date(task.date), "yyyy-MM-dd");
-//     if (!acc[dateKey]) {
-//       acc[dateKey] = [];
-//     }
-//     acc[dateKey].push(task);
-//     return acc;
-//   }, {});
-
-//   return (
-//     <>
-//       <div className="flex flex-col items-center justify-center mt-[50px] w-[90%] ml-[80px] gap-10">
-//         {/* search form */}
-//         <div className="relative w-full">
-//           <input
-//             type="text"
-//             value={searchQuery}
-//             onChange={(e) => setSearchQuery(e.target.value)}
-//             placeholder="Find a specific project here"
-//             className="input input-bordered w-full h-10 rounded-[20px] outline outline-[1px] outline-blue-200 placeholder-gray-500 placeholder-opacity-70 placeholder-italic text-gray-700 pl-10 pr-4"
-//           />
-//           <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-//         </div>
-
-//         {/* displaying of tasks  */}
-//         <div className=" bg-blue-50 p-4 rounded-lg shadow-md  w-full">
-//           {Object.entries(groupedTasks).map(([dateKey, dateTasks]) => (
-
-//             <div key={dateKey} className="mb-6">
-//               <div className="flex items-center mb-2">
-//                 <div className="text-blue-500 text-xl font-semibold uppercase mr-4">
-//                   {format(new Date(dateKey), "MMMM")}
-//                 </div>
-//                 <div className="text-2xl text-blue-500 font-bold mb-1">
-//                   {format(new Date(dateKey), "d")}
-//                 </div>
-//               </div>
-//               <div className="border-l-2 border-gray-300 ml-2 pl-4">
-//                 {dateTasks.map((task, index) => (
-//                   <div
-//                     key={task.id} // Ensure key uses unique ID
-//                     className="bg-white rounded-lg p-5 mb-2 shadow flex justify-between items-start gap-5"
-//                   >
-//                     {/* Title of the task and time */}
-//                     <div className=" flex flex-col items-start justify-center w-[40%]">
-//                       <h3 className="font-bold text-[13px] font-sans">
-//                         {task.title}
-//                       </h3>
-//                       <p className="text-[13px] text-slate-600">
-//                         {format(new Date(task.startTime), "hh:mm a")} -{" "}
-//                         {format(new Date(task.endTime), "hh:mm a")}
-//                       </p>
-//                     </div>
-//                     {/* Description of the task */}
-//                     <div className="flex flex-col items-start justify-center">
-//                       <h3 className="text-[13px] font-sans font-semibold">
-//                         {" "}
-//                         Description{" "}
-//                       </h3>
-//                       <p className="text-[14px] font-sans font-normal">
-//                         {task.description}
-//                       </p>
-//                     </div>
-//                     {/* edit and delete buttons */}
-//                     <div className="flex flex-row items-center gap-3">
-//                       <button onClick={() => handleEdit(task.id)}>
-//                         <CiEdit className="text-yellow-500 hover:text-yellow-600 " />
-//                       </button>
-//                       <button onClick={() => handleDelete(task.id)}>
-//                         <MdDeleteForever className="text-red-600 hover:text-red-700" />
-//                       </button>
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Projects;
 
 // thrid instance of the code
 import { useState, useEffect } from "react";
@@ -304,30 +149,21 @@ import { format, parseISO, isValid } from "date-fns";
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
+import {getTasksFromLocalStorage} from "../../../Services/taskService"
+import {deleteTask} from "../../../Services/taskService"
 
-// Simulate loading tasks from local storage or a service
-const getTasksFromLocalStorage = () => {
-  const tasks = localStorage.getItem("tasks");
-  return tasks ? JSON.parse(tasks) : [];
-};
-
-const deleteTask = (id) => {
-  const storedTasks = getTasksFromLocalStorage();
-  const updatedTasks = storedTasks.filter((task) => task.id !== id);
-  localStorage.setItem("tasks", JSON.stringify(updatedTasks));
-};
 
 const Projects = () => {
   const [tasks, setTasks] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    const storedTasks = getTasksFromLocalStorage();
+    const storedTasks = getTasksFromLocalStorage();  // getTasksFromLocalStorage is a function in the taskService file
     setTasks(storedTasks);
   }, []);
 
   const handleDelete = (id) => {
-    deleteTask(id);
+    deleteTask(id); // deleteTask is a function in the taskService file
     setTasks(getTasksFromLocalStorage()); // Refresh tasks after deletion
   };
 

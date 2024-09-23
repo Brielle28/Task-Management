@@ -12,7 +12,6 @@ const routing = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        // index: true,
         element: <Dashboard />,
         path: "",
       },

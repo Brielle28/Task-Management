@@ -4,10 +4,12 @@ export const getTasksFromLocalStorage = () => {
     return tasks ? JSON.parse(tasks) : [];
   };
   
+  
   // Save tasks to localStorage
   export const saveTasksToLocalStorage = (tasks) => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
+  localStorage.setItem('tasks', JSON.stringify(tasks));
   };
+
   
   // Add a new task
   export const addTask = (task) => {

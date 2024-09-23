@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom"; // Import useLocation hook from react-router
+import { Link, useLocation } from "react-router-dom"; // Import useLocation hook from react-router
 import { SideBarItems } from "../../Utils/sideBarItems";
 
 const Aside = () => {
@@ -16,18 +16,26 @@ const Aside = () => {
           {SideBarItems.map((item) => {
             // Check if the current location matches the item's link
             const isActive = location.pathname === item.link;
-
             return (
-              <div
+              <Link
+                to={item.link}
                 key={item.id}
                 className={`flex flex-row items-center justify-start text-center gap-2 w-[160px] h-[39px] rounded-[7px] 
-                  ${isActive ? "bg-blue-500 text-white" : "bg-blue-100 text-black"}`}
+                  ${
+                    isActive
+                      ? "bg-blue-500 text-white"
+                      : "bg-blue-100 text-black"
+                  }`}
               >
-                <img src={item.icon} alt={item.title} className="size-[15px] ml-5 bg-transparent" />
+                <img
+                  src={item.icon}
+                  alt={item.title}
+                  className="size-[15px] ml-5 bg-transparent"
+                />
                 <a href={item.link}>
                   <h5 className="font-normal text-[13px]">{item.title}</h5>
                 </a>
-              </div>
+              </Link>
             );
           })}
         </div>
