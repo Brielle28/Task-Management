@@ -3,7 +3,7 @@ export const SideBarItems = [
     id: 1,
     icon: "/dash2.png",
     title: "Dashboard",
-    link: "/dashboard",
+    link: "/",
   },
   {
     id: 2,

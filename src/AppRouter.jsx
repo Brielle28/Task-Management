@@ -12,9 +12,9 @@ const routing = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        index: true,
+        // index: true,
         element: <Dashboard />,
-        path: "dashboard",
+        path: "",
       },
       {
         path: "projects",
