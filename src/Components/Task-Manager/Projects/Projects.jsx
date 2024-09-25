@@ -200,7 +200,7 @@ const Projects = () => {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Find a specific project here"
+            placeholder="Find a specific project based on title here"
             className="input input-bordered w-full h-10 rounded-[20px] outline outline-[1px] outline-blue-200 placeholder-gray-500 placeholder-opacity-70 placeholder-italic text-gray-700 pl-10 pr-4"
           />
           <CiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
