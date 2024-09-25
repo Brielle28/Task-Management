@@ -11,14 +11,13 @@ const RingUpBoxes = () => {
     setTasks(storedTasks);
   }, []);
 
-  const todoTasks = tasks.filter((task) => task.status === "todo");
   const inProgressTasks = tasks.filter((task) => task.status === "inprogress");
   const doneTasks = tasks.filter((task) => task.status === "done");
   return (
     <div className="flex flex-row items-center justify-center gap-[60px]">
       {/* tasks */}
       <div className="flex flex-row justify-start items-start gap-[7px] w-[270px] h-[110px] text-white font-roboto bg-blue-600 rounded-[10px] pl-4">
-        <h5 className="text-[65px] font-roboto">{todoTasks.length}</h5>
+        <h5 className="text-[65px] font-roboto">{tasks.length}</h5>
         <div className="flex flex-col items-start justify-start mt-6 gap-2">
           <SlCalender className="size-[18px] " />
           <h5 className="font-roboto">All tasks</h5>
