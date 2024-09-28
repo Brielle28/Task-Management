@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { format, parseISO, isValid } from "date-fns";
-import { CiEdit } from "react-icons/ci";
 import { MdDeleteForever } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import { getTasksFromLocalStorage } from "../../../Services/taskService";
 import { deleteTask } from "../../../Services/taskService";
-import Button from "../../ButtonFolder/Button";
+import Button from "../../AddToTaskFormFolder/Button";
+import EditButton from "../../EditComponent/EditButton";
+import EditForm from "../../EditComponent/EditForm";
 
 const Projects = () => {
   const [tasks, setTasks] = useState([]);
@@ -44,7 +45,18 @@ const Projects = () => {
     acc[dateKey].push(task);
     return acc;
   }, {});
+  const [editingTaskId, setEditingTaskId] = useState(null);
 
+  const handleEditClick = (taskId) => {
+    setEditingTaskId(taskId);
+    document.getElementById("edit_modal").showModal();
+  };
+
+  const handleCloseModal = () => {
+    setEditingTaskId(null);
+    document.getElementById("edit_modal").close();
+    setTasks(getTasksFromLocalStorage()); // Refresh tasks after editing
+  };
   return (
     <>
       <div className="flex flex-col items-center justify-center mt-[50px] w-[100%] ml-[0px] gap-10">
@@ -64,9 +76,10 @@ const Projects = () => {
         {filteredTasks.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-[450px] gap-[20px] bg-blue-100  p-6 rounded-lg shadow-md w-full text-center">
             <p className="text-blue-600 font-roboto font-bold text-[28px]">
-              It looks like you don't have any tasks yet. Create new ones to get started !!!
+              It looks like you don't have any tasks yet. Create new ones to get
+              started !!!
             </p>
-            <Button/>
+            <Button />
           </div>
         ) : (
           <div className="bg-blue-50 p-4 rounded-lg shadow-md w-full">
@@ -109,9 +122,7 @@ const Projects = () => {
                       </div>
                       {/* Edit and Delete buttons */}
                       <div className="flex flex-row items-end justify-end gap-3 w-[20%]">
-                        <button onClick={() => handleEdit(task.id)}>
-                          <CiEdit className="text-yellow-500 hover:text-yellow-600" />
-                        </button>
+                        <EditButton taskId={task.id} onEdit={handleEditClick} />
                         <button onClick={() => handleDelete(task.id)}>
                           <MdDeleteForever className="text-red-600 hover:text-red-700" />
                         </button>
@@ -124,6 +135,11 @@ const Projects = () => {
           </div>
         )}
       </div>
+      <dialog id="edit_modal" className="modal">
+        {editingTaskId && (
+          <EditForm taskId={editingTaskId} onClose={handleCloseModal} />
+        )}
+      </dialog>
     </>
   );
 };

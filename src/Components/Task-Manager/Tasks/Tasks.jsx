@@ -3,8 +3,10 @@ import { IoIosCheckboxOutline } from "react-icons/io";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { PiHourglass } from "react-icons/pi";
 import TaskColumn from "../Tasks/TaskColumn"
-import Button from "../../ButtonFolder/Button";
 import { getTasksFromLocalStorage, editTask, deleteTask } from "../../../Services/taskService";
+import Button from "../../AddToTaskFormFolder/Button";
+import EditButton from "../../EditComponent/EditButton";
+import EditForm from "../../EditComponent/EditForm";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -43,12 +45,29 @@ const Tasks = () => {
   const inProgressTasks = tasks.filter((task) => task.status === "inprogress");
   const doneTasks = tasks.filter((task) => task.status === "done");
 
+  //for edit functionality 
+  // const [tasks, setTasks] = useState(getTasksFromLocalStorage());
+  const [editingTaskId, setEditingTaskId] = useState(null);
+
+  const handleEditClick = (taskId) => {
+    setEditingTaskId(taskId);
+    document.getElementById("edit_modal").showModal();
+  };
+
+  const handleCloseModal = () => {
+    setEditingTaskId(null);
+    document.getElementById("edit_modal").close();
+    setTasks(getTasksFromLocalStorage()); // Refresh tasks after editing
+  };
+
+
   return (
+    <>
     <div className="min-h-screen w-full">
       <div className="rounded-lg w-[100%]">
         <div className="flex justify-between items-center mb-6 sticky top-0 bg-white z-10 w-full p-10">
           <h1 className="text-2xl font-bold">Tasks</h1>
-          <Button />
+          <Button/>
         </div>
 
         <div className="flex flex-col md:flex-row -mx-2 gap-5 overflow-y-auto w-[90%] mx-auto">
@@ -61,6 +80,7 @@ const Tasks = () => {
             icon={<MdCheckBoxOutlineBlank className="mt-[6px] mr-2" />}
             moveTaskToProgress={moveTaskToProgress}
             deleteTask={handleDelete}
+            onEdit={handleEditClick}
           />
           {/* In Progress Column */}
           <TaskColumn
@@ -71,6 +91,7 @@ const Tasks = () => {
             icon={<PiHourglass className="mt-[6px] mr-2" />}
             moveTaskToDone={moveTaskToDone}
             deleteTask={handleDelete}
+            onEdit={handleEditClick}
           />
           {/* Done Column */}
           <TaskColumn
@@ -80,10 +101,17 @@ const Tasks = () => {
             bg="bg-green-100"
             icon={<IoIosCheckboxOutline className="mt-[6px] mr-2" />}
             deleteTask={handleDelete}
+            onEdit={handleEditClick}
           />
         </div>
       </div>
     </div>
+    <dialog id="edit_modal" className="modal">
+        {editingTaskId && (
+          <EditForm taskId={editingTaskId} onClose={handleCloseModal} />
+        )}
+      </dialog>
+    </>
   );
 };
 

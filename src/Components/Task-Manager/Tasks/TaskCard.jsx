@@ -1,14 +1,14 @@
 import { MdDeleteForever } from "react-icons/md";
-import { CiEdit } from "react-icons/ci";
-const TaskCard = ({ task, moveTaskToProgress, moveTaskToDone, deleteTask }) => (
+import EditButton from "../../EditComponent/EditButton";
+
+const TaskCard = ({ task, moveTaskToProgress, moveTaskToDone, deleteTask, onEdit }) => {
+  return (
     <div className="card bg-white rounded-[10px] mb-4">
       <div className="card-body p-4 flex-col items-start justify-center gap-1">
         <div className="flex flex-row items-center justify-between w-full">
           <h1 className="font-roboto font-bold">{task.title}</h1>
           <div className="flex gap-[6px]">
-            <button>
-              <CiEdit className="size-[13px] text-yellow-700" />
-            </button>
+            <EditButton taskId={task.id} onEdit={onEdit} />
             <button onClick={() => deleteTask(task.id)}>
               <MdDeleteForever className="size-[13px] text-red-700" />
             </button>
@@ -37,5 +37,6 @@ const TaskCard = ({ task, moveTaskToProgress, moveTaskToDone, deleteTask }) => (
       </div>
     </div>
   );
+};
 
-  export default TaskCard;
+export default TaskCard;

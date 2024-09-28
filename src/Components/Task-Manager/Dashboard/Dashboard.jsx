@@ -1,6 +1,6 @@
 import RingUpBoxes from "./RingUpBoxes";
 import DashboardHistory from "./DashboardHistory";
-import Button from "../../ButtonFolder/Button";
+import Button from "../../AddToTaskFormFolder/Button";
 const Dashboard = () => {
   return (
     <div className="flex flex-col items-start justify-start mt-6 ">
