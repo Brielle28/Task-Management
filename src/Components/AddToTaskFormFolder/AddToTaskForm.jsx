@@ -11,12 +11,12 @@ const TaskForm = () => {
     e.preventDefault();
 
     const newTask = {
-      id: Date.now(), // Simple unique ID using timestamp
+      id: Date.now(),
       title,
       description,
       startDate,
       endDate,
-      status: "todo", // Default status for a new task
+      status: "todo",
     };
 
     console.log(newTask);
@@ -27,6 +27,9 @@ const TaskForm = () => {
     setDescription("");
     setStartDate("");
     setEndDate("");
+
+    // Close the modal
+    document.getElementById('my_modal_3').close();
   };
 
   return (
@@ -94,7 +97,7 @@ const TaskForm = () => {
           </label>
 
           {/* Submit Button */}
-          <button className="w-full bg-blue-500 btn rounded-[10px] text-white font-roboto font-semibold hover:bg-blue-400 sm:btn-sm md:btn-md lg:btn-lg">
+          <button type="submit" className="w-full bg-blue-500 btn rounded-[10px] text-white font-roboto font-semibold hover:bg-blue-400 sm:btn-sm md:btn-md lg:btn-lg">
             Submit
           </button>
         </form>
