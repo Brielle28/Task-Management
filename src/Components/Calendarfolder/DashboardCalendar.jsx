@@ -38,12 +38,13 @@ const DashboardCalendar = () => {
   };
 
   return (
-    <div>
+    <div className="w-full h-full min-h-[300px] sm:min-h-[350px] lg:min-h-[400px] flex items-start justify-start">
       <Calendar
         value={new Date()}  // Always set to current date
         tileContent={getTileContent}  // Add task dots under days
         selectRange={false}  // Disable range selection
         showNeighboringMonth={true}  // Show neighboring month days
+        className="w-full h-full"
       />
     </div>
   );

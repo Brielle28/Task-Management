@@ -61,60 +61,73 @@ const Calendar = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full max-w-5xl mx-auto pt-10 gap-7">
-      <div className="flex items-center justify-between w-full ">
-        <h1 className="text-2xl font-bold mb-4 text-blue-600">My Schedule</h1>
-        <Button/>
+    <div className="flex flex-col w-full max-w-5xl mx-auto pt-4 sm:pt-6 lg:pt-10 gap-4 sm:gap-6 lg:gap-7 px-2 sm:px-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-4">
+        <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-blue-600">My Schedule</h1>
+        <div className="w-full sm:w-auto">
+          <Button/>
+        </div>
       </div>
-      <div className="bg-blue-50 p-5 rounded-[10px] shadow-1xl">
+      <div className="bg-blue-50 p-3 sm:p-4 lg:p-5 rounded-xl lg:rounded-[10px] shadow-lg">
         <div className="flex justify-between items-center mb-4">
-          <button onClick={handlePreviousMonth} className="">
-            <FaLongArrowAltLeft />
+          <button 
+            onClick={handlePreviousMonth} 
+            className="p-2 hover:bg-blue-100 rounded-lg transition-colors"
+            aria-label="Previous month"
+          >
+            <FaLongArrowAltLeft className="text-lg sm:text-xl" />
           </button>
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-base sm:text-lg lg:text-xl font-semibold text-gray-800">
             {months[month]} {year}
           </h2>
-          <button onClick={handleNextMonth} className="">
-            <FaLongArrowAltRight />
+          <button 
+            onClick={handleNextMonth} 
+            className="p-2 hover:bg-blue-100 rounded-lg transition-colors"
+            aria-label="Next month"
+          >
+            <FaLongArrowAltRight className="text-lg sm:text-xl" />
           </button>
         </div>
 
-        <div className="grid grid-cols-7 gap-4 text-center">
+        <div className="grid grid-cols-7 gap-2 sm:gap-3 lg:gap-4 text-center mb-2">
           {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map((day) => (
-            <div key={day} className="font-semibold">
+            <div key={day} className="font-semibold text-xs sm:text-sm text-gray-600">
               {day}
             </div>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-2 mt-2">
+        <div className="grid grid-cols-7 gap-1 sm:gap-2 mt-2">
           {/* Empty cells before the first day of the month */}
           {Array(startDay)
             .fill(null)
             .map((_, idx) => (
-              <div key={idx}></div> // Empty cells for days before the first of the month
+              <div key={idx} className="min-h-[60px] sm:min-h-[80px]"></div>
             ))}
 
           {/* Render the actual days of the month */}
           {Array.from({ length: daysInMonth }, (_, idx) => idx + 1).map((day) => (
-            <div key={day} className="relative border p-2 h-20">
-              <span className="absolute top-1 right-1 text-xs">{day}</span>
+            <div key={day} className="relative border border-gray-200 p-1 sm:p-2 min-h-[60px] sm:min-h-[80px] lg:h-20 rounded hover:bg-blue-100 transition-colors">
+              <span className="absolute top-1 right-1 text-xs font-semibold text-gray-700">{day}</span>
               {/* Render tasks for this day */}
-              {tasks.map((task) => {
-                const taskStartDate = new Date(task.startDate); // Parse task's start date
-                return (
-                  taskStartDate.getDate() === day &&
-                  taskStartDate.getMonth() === month &&
-                  taskStartDate.getFullYear() === year && (
-                    <div
-                      key={task.title}
-                      className="bg-purple-200 p-1 rounded text-xs text-purple-700 mt-2"
-                    >
-                      {task.title}
-                    </div>
-                  )
-                );
-              })}
+              <div className="mt-4 sm:mt-5 space-y-1">
+                {tasks.map((task) => {
+                  const taskStartDate = new Date(task.startDate);
+                  return (
+                    taskStartDate.getDate() === day &&
+                    taskStartDate.getMonth() === month &&
+                    taskStartDate.getFullYear() === year && (
+                      <div
+                        key={task.title}
+                        className="bg-purple-200 p-1 rounded text-[10px] sm:text-xs text-purple-700 truncate"
+                        title={task.title}
+                      >
+                        {task.title}
+                      </div>
+                    )
+                  );
+                })}
+              </div>
             </div>
           ))}
         </div>

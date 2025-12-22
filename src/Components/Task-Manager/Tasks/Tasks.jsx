@@ -64,19 +64,21 @@ const Tasks = () => {
   return (
     <>
     <div className="min-h-screen w-full">
-      <div className="rounded-lg w-[100%]">
-        <div className="flex justify-between items-center mb-6 sticky top-0 bg-white z-10 w-full p-10">
-          <h1 className="text-2xl font-bold">Tasks</h1>
-          <Button/>
+      <div className="rounded-lg w-full">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4 sm:mb-6 sticky top-0 bg-white z-10 w-full p-4 sm:p-6 lg:p-10 shadow-sm">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-800">Tasks</h1>
+          <div className="w-full sm:w-auto">
+            <Button/>
+          </div>
         </div>
 
-        <div className="flex flex-col md:flex-row -mx-2 gap-5 overflow-y-auto w-[90%] mx-auto">
+        <div className="flex flex-col lg:flex-row gap-4 sm:gap-5 overflow-x-auto w-full px-2 sm:px-4 lg:px-0 pb-4">
           {/* To Do Column */}
           <TaskColumn
             title="To do"
-            color="text-blue-400"
+            color="text-blue-500"
             tasks={todoTasks}
-            bg="bg-blue-100"
+            bg="bg-blue-50"
             icon={<MdCheckBoxOutlineBlank className="mt-[6px] mr-2" />}
             moveTaskToProgress={moveTaskToProgress}
             deleteTask={handleDelete}
@@ -87,7 +89,7 @@ const Tasks = () => {
             title="In progress"
             color="text-yellow-500"
             tasks={inProgressTasks}
-            bg="bg-yellow-100"
+            bg="bg-yellow-50"
             icon={<PiHourglass className="mt-[6px] mr-2" />}
             moveTaskToDone={moveTaskToDone}
             deleteTask={handleDelete}
@@ -98,7 +100,7 @@ const Tasks = () => {
             title="Done"
             color="text-green-500"
             tasks={doneTasks}
-            bg="bg-green-100"
+            bg="bg-green-50"
             icon={<IoIosCheckboxOutline className="mt-[6px] mr-2" />}
             deleteTask={handleDelete}
             onEdit={handleEditClick}

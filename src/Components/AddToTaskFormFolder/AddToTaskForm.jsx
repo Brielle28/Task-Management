@@ -34,38 +34,38 @@ const TaskForm = () => {
 
   return (
     <dialog id="my_modal_3" className="modal">
-      <div className="modal-box">
+      <div className="modal-box w-11/12 max-w-2xl bg-white">
         {/* Close button */}
         <form method="dialog">
-          <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 hover:text-blue-500">
+          <button className="btn btn-sm btn-circle btn-ghost text-black absolute right-2 top-2 hover:text-blue-500 hover:bg-blue-50 transition-colors">
             ✕
           </button>
         </form>
 
         {/* Form */}
         <form
-          className="flex flex-col items-start justify-center gap-3 px-5 mt-5"
+          className="flex flex-col items-start justify-center gap-4 px-4 sm:px-5 mt-5"
           onSubmit={handleSubmit}
         >
-          <h3 className="font-bold text-lg text-blue-600">Add a Task</h3>
+          <h3 className="font-bold text-lg sm:text-xl text-blue-600">Add a Task</h3>
 
           {/* Start and End date */}
-          <div className="flex flex-row items-start justify-between w-full">
-            <label className="input input-bordered flex flex-col items-start w-[45%] pl-2">
-              Start date
+          <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-3 sm:gap-4 ">
+            <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-2 bg-white">
+              <span className="text-xs text-gray-600 mb-1">Start date</span>
               <input
                 type="datetime-local"
-                className="grow text-[12px] appearance-none"
+                className="grow text-xs sm:text-sm appearance-none w-full bg-white"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 required
               />
             </label>
-            <label className="input input-bordered flex flex-col items-start w-[45%] pl-2">
-              End date
+            <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-2 bg-white">
+              <span className="text-xs text-gray-600 mb-1">End date</span>
               <input
                 type="datetime-local"
-                className="grow text-[12px] appearance-none"
+                className="grow text-xs sm:text-sm appearance-none w-full"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 required
@@ -74,10 +74,10 @@ const TaskForm = () => {
           </div>
 
           {/* Task Title */}
-          <label className="input input-bordered flex items-center gap-2 w-full">
+          <label className="input input-bordered flex items-center gap-2 w-full bg-white">
             <input
               type="text"
-              className="grow"
+              className="grow text-sm sm:text-base"
               placeholder="Name of the task"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -86,9 +86,9 @@ const TaskForm = () => {
           </label>
 
           {/* Task Description */}
-          <label className="form-control w-full">
+          <label className="form-control w-full bg-white">
             <textarea
-              className="textarea textarea-bordered h-24"
+              className="textarea textarea-bordered h-24 sm:h-28 text-sm sm:text-base bg-white"
               placeholder="Description about the task"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -97,7 +97,7 @@ const TaskForm = () => {
           </label>
 
           {/* Submit Button */}
-          <button type="submit" className="w-full bg-blue-500 btn rounded-[10px] text-white font-roboto font-semibold hover:bg-blue-400 sm:btn-sm md:btn-md lg:btn-lg">
+          <button type="submit" className="w-full bg-blue-500 btn border-0 rounded-lg text-white font-roboto font-semibold hover:bg-blue-600 transition-colors text-sm sm:text-base">
             Submit
           </button>
         </form>
