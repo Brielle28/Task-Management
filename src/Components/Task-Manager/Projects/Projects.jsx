@@ -7,6 +7,7 @@ import { deleteTask } from "../../../Services/taskService";
 import Button from "../../AddToTaskFormFolder/Button";
 import EditButton from "../../EditComponent/EditButton";
 import EditForm from "../../EditComponent/EditForm";
+import DeleteConfirmationModal from "../../EditComponent/DeleteConfirmationModal";
 
 const Projects = () => {
   const [tasks, setTasks] = useState([]);
@@ -17,14 +18,27 @@ const Projects = () => {
     setTasks(storedTasks);
   }, []);
 
-  const handleDelete = (id) => {
-    deleteTask(id); // deleteTask is a function in the taskService file
-    setTasks(getTasksFromLocalStorage()); // Refresh tasks after deletion
+  // Delete task confirmation
+  const [taskToDelete, setTaskToDelete] = useState(null);
+
+  const handleDeleteClick = (id) => {
+    const task = tasks.find((t) => t.id === id);
+    setTaskToDelete(task);
+    document.getElementById("delete_modal").showModal();
   };
 
-  const handleEdit = (id) => {
-    alert(`Edit functionality for task ID: ${id}`);
-    // You can add the modal or redirect logic for editing here
+  const handleDeleteConfirm = () => {
+    if (taskToDelete) {
+      deleteTask(taskToDelete.id);
+      setTasks(getTasksFromLocalStorage()); // Refresh tasks after deletion
+      setTaskToDelete(null);
+      document.getElementById("delete_modal").close();
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setTaskToDelete(null);
+    document.getElementById("delete_modal").close();
   };
 
   const safeFormatDate = (dateString, formatStr) => {
@@ -76,7 +90,7 @@ const Projects = () => {
         {filteredTasks.length === 0 ? (
           <div className="flex flex-col items-center justify-center min-h-[300px] sm:h-[400px] lg:h-[450px] gap-4 sm:gap-6 lg:gap-[20px] bg-gradient-to-br from-blue-50 to-blue-100 p-6 sm:p-8 rounded-xl lg:rounded-lg shadow-md w-full text-center">
             <p className="text-blue-600 font-roboto font-bold text-lg sm:text-xl lg:text-[28px] px-4">
-              It looks like you don't have any tasks yet. Create new ones to get started!
+              It looks like you don&apos;t have any tasks yet. Create new ones to get started!
             </p>
             <Button />
           </div>
@@ -123,7 +137,7 @@ const Projects = () => {
                       <div className="flex flex-row items-center justify-end gap-3 w-full sm:w-auto sm:flex-shrink-0">
                         <EditButton taskId={task.id} onEdit={handleEditClick} />
                         <button 
-                          onClick={() => handleDelete(task.id)}
+                          onClick={() => handleDeleteClick(task.id)}
                           className="hover:opacity-70 transition-opacity"
                           aria-label="Delete task"
                         >
@@ -141,6 +155,15 @@ const Projects = () => {
       <dialog id="edit_modal" className="modal">
         {editingTaskId && (
           <EditForm taskId={editingTaskId} onClose={handleCloseModal} />
+        )}
+      </dialog>
+      <dialog id="delete_modal" className="modal">
+        {taskToDelete && (
+          <DeleteConfirmationModal
+            taskTitle={taskToDelete.title}
+            onConfirm={handleDeleteConfirm}
+            onCancel={handleDeleteCancel}
+          />
         )}
       </dialog>
     </>

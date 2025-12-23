@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { editTask, getTasksFromLocalStorage } from "../../Services/taskService";
+import { SlCalender } from "react-icons/sl";
 
 const EditForm = ({ taskId, onClose }) => {
   const [task, setTask] = useState({
@@ -8,6 +9,16 @@ const EditForm = ({ taskId, onClose }) => {
     title: "",
     description: "",
   });
+  const startDateInputRef = useRef(null);
+  const endDateInputRef = useRef(null);
+
+  const handleCalendarClick = (inputRef) => {
+    if (inputRef.current) {
+      inputRef.current.showPicker?.();
+      inputRef.current.focus();
+      inputRef.current.click();
+    }
+  };
 
   useEffect(() => {
     const loadTask = () => {
@@ -70,27 +81,45 @@ const EditForm = ({ taskId, onClose }) => {
 
         {/* Date inputs */}
         <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-4">
-          <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-4 bg-white border-blue-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+          <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-4 pr-10 bg-white border-blue-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all relative">
             <span className="text-xs font-medium text-gray-700 mb-1.5">Start date</span>
             <input
+              ref={startDateInputRef}
               type="datetime-local"
-              className="grow text-xs sm:text-sm appearance-none w-full bg-transparent border-0 focus:outline-none"
+              className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none pr-8"
               name="startDate"
               value={task.startDate}
               onChange={handleInputChange}
               required
             />
+            <button
+              type="button"
+              onClick={() => handleCalendarClick(startDateInputRef)}
+              className="absolute right-3 bottom-2 text-gray-400 hover:text-blue-600 transition-colors cursor-pointer z-10"
+              aria-label="Open calendar"
+            >
+              <SlCalender className="w-5 h-5" />
+            </button>
           </label>
-          <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-4 bg-white border-blue-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+          <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-4 pr-10 bg-white border-blue-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all relative">
             <span className="text-xs font-medium text-gray-700 mb-1.5">End date</span>
             <input
+              ref={endDateInputRef}
               type="datetime-local"
-              className="grow text-xs sm:text-sm appearance-none w-full bg-transparent border-0 focus:outline-none"
+              className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none pr-8"
               name="endDate"
               value={task.endDate}
               onChange={handleInputChange}
               required
             />
+            <button
+              type="button"
+              onClick={() => handleCalendarClick(endDateInputRef)}
+              className="absolute right-3 bottom-2 text-gray-400 hover:text-blue-600 transition-colors cursor-pointer z-10"
+              aria-label="Open calendar"
+            >
+              <SlCalender className="w-5 h-5" />
+            </button>
           </label>
         </div>
 

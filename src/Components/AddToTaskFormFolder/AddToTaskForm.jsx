@@ -1,11 +1,22 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { addTask } from "../../Services/taskService";
+import { SlCalender } from "react-icons/sl";
 
 const TaskForm = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const startDateInputRef = useRef(null);
+  const endDateInputRef = useRef(null);
+
+  const handleCalendarClick = (inputRef) => {
+    if (inputRef.current) {
+      inputRef.current.showPicker?.();
+      inputRef.current.focus();
+      inputRef.current.click();
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -51,25 +62,43 @@ const TaskForm = () => {
 
           {/* Start and End date */}
           <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-3 sm:gap-4 ">
-            <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-2 bg-white">
+            <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-2 pr-10 bg-white relative">
               <span className="text-xs text-gray-600 mb-1">Start date</span>
               <input
+                ref={startDateInputRef}
                 type="datetime-local"
-                className="grow text-xs sm:text-sm appearance-none w-full bg-white"
+                className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none pr-8"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                onClick={() => handleCalendarClick(startDateInputRef)}
+                className="absolute right-3 bottom-2 text-gray-400 hover:text-blue-600 transition-colors cursor-pointer z-10"
+                aria-label="Open calendar"
+              >
+                <SlCalender className="w-5 h-5" />
+              </button>
             </label>
-            <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-2 bg-white">
+            <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-2 pr-10 bg-white relative">
               <span className="text-xs text-gray-600 mb-1">End date</span>
               <input
+                ref={endDateInputRef}
                 type="datetime-local"
-                className="grow text-xs sm:text-sm appearance-none w-full"
+                className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none pr-8"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                onClick={() => handleCalendarClick(endDateInputRef)}
+                className="absolute right-3 bottom-2 text-gray-400 hover:text-blue-600 transition-colors cursor-pointer z-10"
+                aria-label="Open calendar"
+              >
+                <SlCalender className="w-5 h-5" />
+              </button>
             </label>
           </div>
 

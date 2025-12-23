@@ -7,6 +7,7 @@ import { getTasksFromLocalStorage, editTask, deleteTask } from "../../../Service
 import Button from "../../AddToTaskFormFolder/Button";
 import EditButton from "../../EditComponent/EditButton";
 import EditForm from "../../EditComponent/EditForm";
+import DeleteConfirmationModal from "../../EditComponent/DeleteConfirmationModal";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState([]);
@@ -34,10 +35,27 @@ const Tasks = () => {
     );
   };
 
-  // Delete task
-  const handleDelete = (id) => {
-    deleteTask(id); // deleteTask is a function in the taskService file
-    setTasks(getTasksFromLocalStorage()); // Refresh tasks after deletion
+  // Delete task confirmation
+  const [taskToDelete, setTaskToDelete] = useState(null);
+
+  const handleDeleteClick = (taskId) => {
+    const task = tasks.find((t) => t.id === taskId);
+    setTaskToDelete(task);
+    document.getElementById("delete_modal").showModal();
+  };
+
+  const handleDeleteConfirm = () => {
+    if (taskToDelete) {
+      deleteTask(taskToDelete.id);
+      setTasks(getTasksFromLocalStorage()); // Refresh tasks after deletion
+      setTaskToDelete(null);
+      document.getElementById("delete_modal").close();
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setTaskToDelete(null);
+    document.getElementById("delete_modal").close();
   };
 
   // Split tasks by status
@@ -81,7 +99,7 @@ const Tasks = () => {
             bg="bg-blue-50"
             icon={<MdCheckBoxOutlineBlank className="mt-[6px] mr-2" />}
             moveTaskToProgress={moveTaskToProgress}
-            deleteTask={handleDelete}
+            deleteTask={handleDeleteClick}
             onEdit={handleEditClick}
           />
           {/* In Progress Column */}
@@ -92,7 +110,7 @@ const Tasks = () => {
             bg="bg-yellow-50"
             icon={<PiHourglass className="mt-[6px] mr-2" />}
             moveTaskToDone={moveTaskToDone}
-            deleteTask={handleDelete}
+            deleteTask={handleDeleteClick}
             onEdit={handleEditClick}
           />
           {/* Done Column */}
@@ -102,7 +120,7 @@ const Tasks = () => {
             tasks={doneTasks}
             bg="bg-green-50"
             icon={<IoIosCheckboxOutline className="mt-[6px] mr-2" />}
-            deleteTask={handleDelete}
+            deleteTask={handleDeleteClick}
             onEdit={handleEditClick}
           />
         </div>
@@ -111,6 +129,15 @@ const Tasks = () => {
     <dialog id="edit_modal" className="modal">
         {editingTaskId && (
           <EditForm taskId={editingTaskId} onClose={handleCloseModal} />
+        )}
+      </dialog>
+    <dialog id="delete_modal" className="modal">
+        {taskToDelete && (
+          <DeleteConfirmationModal
+            taskTitle={taskToDelete.title}
+            onConfirm={handleDeleteConfirm}
+            onCancel={handleDeleteCancel}
+          />
         )}
       </dialog>
     </>
