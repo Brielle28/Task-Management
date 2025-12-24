@@ -1,8 +1,10 @@
 import { useEffect, useState, useRef } from "react";
-import { editTask, getTasksFromLocalStorage } from "../../Services/taskService";
+import { useTasks } from "../../Context/TaskContext";
+import { getTasksFromLocalStorage } from "../../Services/taskService";
 import { SlCalender } from "react-icons/sl";
 
 const EditForm = ({ taskId, onClose }) => {
+  const { tasks, editTask } = useTasks();
   const [task, setTask] = useState({
     startDate: "",
     endDate: "",
@@ -21,24 +23,19 @@ const EditForm = ({ taskId, onClose }) => {
   };
 
   useEffect(() => {
-    const loadTask = () => {
-      const allTasks = getTasksFromLocalStorage();
-      const foundTask = allTasks.find((t) => t.id === taskId);
-      if (foundTask) {
-        setTask(foundTask);
-      } else {
-        console.error(`Task with id ${taskId} not found`);
-        setTask({
-          startDate: "",
-          endDate: "",
-          title: "",
-          description: "",
-        });
-      }
-    };
-
-    loadTask();
-  }, [taskId]);
+    const foundTask = tasks.find((t) => t.id === taskId);
+    if (foundTask) {
+      setTask(foundTask);
+    } else {
+      console.error(`Task with id ${taskId} not found`);
+      setTask({
+        startDate: "",
+        endDate: "",
+        title: "",
+        description: "",
+      });
+    }
+  }, [taskId, tasks]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,9 +47,11 @@ const EditForm = ({ taskId, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    editTask({ ...task, id: taskId });
-    console.log("Task updated:", task);
-    onClose();
+    const success = editTask({ ...task, id: taskId });
+    if (success) {
+      console.log("Task updated:", task);
+      onClose();
+    }
   };
 
   return (

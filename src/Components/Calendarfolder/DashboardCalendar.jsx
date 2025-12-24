@@ -1,23 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import '../Calendarfolder/DashboardCalendar.css'; // Custom styles for task dots
-import { getTasksFromLocalStorage } from "../../Services/taskService";
+import { useTasks } from "../../Context/TaskContext";
 
 const DashboardCalendar = () => {
-  const [tasks, setTasks] = useState([]);
+  const { tasks: storedTasks } = useTasks();
 
-  useEffect(() => {
-    const storedTasks = getTasksFromLocalStorage(); // Fetch tasks from local storage
-
-    // Parse the startDate of each task
-    const parsedTasks = storedTasks.map(task => ({
+  // Parse the startDate of each task
+  const tasks = useMemo(() => {
+    return storedTasks.map(task => ({
       ...task,
       date: new Date(task.startDate), // Use startDate instead of date
     }));
-
-    setTasks(parsedTasks);
-  }, []);
+  }, [storedTasks]);
 
   // Function to check if a day has a task and return corresponding dot
   const getTileContent = ({ date, view }) => {

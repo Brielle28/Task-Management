@@ -1,10 +1,13 @@
 import AppRouter from "./AppRouter"
+import { TaskProvider } from "./Context/TaskContext"
 
 function App() {
 
   return (
     <>
-    <AppRouter/>
+    <TaskProvider>
+      <AppRouter/>
+    </TaskProvider>
     </>
   )
 }

@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaLongArrowAltRight, FaLongArrowAltLeft } from "react-icons/fa";
-import { getTasksFromLocalStorage } from "../../../Services/taskService";
+import { useTasks } from "../../../Context/TaskContext";
 import Button from "../../AddToTaskFormFolder/Button";
 
 const Calendar = () => {
-  // State to hold tasks from local storage
-  const [tasks, setTasks] = useState([]);
+  const { tasks } = useTasks();
 
   // Get the current date
   const currentDate = new Date();
@@ -13,12 +12,6 @@ const Calendar = () => {
   // Use state to keep track of the selected year and month
   const [year, setYear] = useState(currentDate.getFullYear());
   const [month, setMonth] = useState(currentDate.getMonth()); // 0 = January, 11 = December
-
-  // Fetch tasks from localStorage when the component mounts
-  useEffect(() => {
-    const storedTasks = getTasksFromLocalStorage();
-    setTasks(storedTasks); // Update state with tasks from localStorage
-  }, []); // Empty dependency array ensures this runs once on mount
 
   // Calculate days in the current month and the first day of the month
   const daysInMonth = new Date(year, month + 1, 0).getDate(); // Last day of the current month

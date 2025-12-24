@@ -1,22 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { format, parseISO, isValid } from "date-fns";
 import { MdDeleteForever } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
-import { getTasksFromLocalStorage } from "../../../Services/taskService";
-import { deleteTask } from "../../../Services/taskService";
+import { useTasks } from "../../../Context/TaskContext";
 import Button from "../../AddToTaskFormFolder/Button";
 import EditButton from "../../EditComponent/EditButton";
 import EditForm from "../../EditComponent/EditForm";
 import DeleteConfirmationModal from "../../EditComponent/DeleteConfirmationModal";
 
 const Projects = () => {
-  const [tasks, setTasks] = useState([]);
+  const { tasks, removeTask } = useTasks();
   const [searchQuery, setSearchQuery] = useState("");
-
-  useEffect(() => {
-    const storedTasks = getTasksFromLocalStorage(); // getTasksFromLocalStorage is a function in the taskService file
-    setTasks(storedTasks);
-  }, []);
 
   // Delete task confirmation
   const [taskToDelete, setTaskToDelete] = useState(null);
@@ -29,8 +23,7 @@ const Projects = () => {
 
   const handleDeleteConfirm = () => {
     if (taskToDelete) {
-      deleteTask(taskToDelete.id);
-      setTasks(getTasksFromLocalStorage()); // Refresh tasks after deletion
+      removeTask(taskToDelete.id); // Remove from context (will sync automatically)
       setTaskToDelete(null);
       document.getElementById("delete_modal").close();
     }
@@ -69,7 +62,7 @@ const Projects = () => {
   const handleCloseModal = () => {
     setEditingTaskId(null);
     document.getElementById("edit_modal").close();
-    setTasks(getTasksFromLocalStorage()); // Refresh tasks after editing
+    // Tasks will automatically refresh via context
   };
   return (
     <>

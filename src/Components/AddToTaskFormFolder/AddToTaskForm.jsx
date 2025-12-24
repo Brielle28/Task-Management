@@ -1,8 +1,9 @@
 import { useState, useRef } from "react";
-import { addTask } from "../../Services/taskService";
+import { useTasks } from "../../Context/TaskContext";
 import { SlCalender } from "react-icons/sl";
 
 const TaskForm = () => {
+  const { addTask } = useTasks();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -31,16 +32,18 @@ const TaskForm = () => {
     };
 
     console.log(newTask);
-    addTask(newTask);
+    const success = addTask(newTask);
+    
+    if (success) {
+      // Clear the form fields
+      setTitle("");
+      setDescription("");
+      setStartDate("");
+      setEndDate("");
 
-    // Clear the form fields
-    setTitle("");
-    setDescription("");
-    setStartDate("");
-    setEndDate("");
-
-    // Close the modal
-    document.getElementById('my_modal_3').close();
+      // Close the modal
+      document.getElementById('my_modal_3').close();
+    }
   };
 
   return (

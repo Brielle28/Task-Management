@@ -1,15 +1,10 @@
 import { PiHourglass } from "react-icons/pi";
 import { SlCalender } from "react-icons/sl";
 import { GiCheckMark } from "react-icons/gi";
-import { useEffect, useState } from "react";
-import { getTasksFromLocalStorage } from "../../../Services/taskService";
-const RingUpBoxes = () => {
-  const [tasks, setTasks] = useState([]);
+import { useTasks } from "../../../Context/TaskContext";
 
-  useEffect(() => {
-    const storedTasks = getTasksFromLocalStorage();
-    setTasks(storedTasks);
-  }, []);
+const RingUpBoxes = () => {
+  const { tasks } = useTasks();
 
   const inProgressTasks = tasks.filter((task) => task.status === "inprogress");
   const doneTasks = tasks.filter((task) => task.status === "done");

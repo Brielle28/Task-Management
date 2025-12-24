@@ -1,38 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoIosCheckboxOutline } from "react-icons/io";
 import { MdCheckBoxOutlineBlank } from "react-icons/md";
 import { PiHourglass } from "react-icons/pi";
 import TaskColumn from "../Tasks/TaskColumn"
-import { getTasksFromLocalStorage, editTask, deleteTask } from "../../../Services/taskService";
+import { useTasks } from "../../../Context/TaskContext";
 import Button from "../../AddToTaskFormFolder/Button";
 import EditButton from "../../EditComponent/EditButton";
 import EditForm from "../../EditComponent/EditForm";
 import DeleteConfirmationModal from "../../EditComponent/DeleteConfirmationModal";
 
 const Tasks = () => {
-  const [tasks, setTasks] = useState([]);
-
-  useEffect(() => {
-    const storedTasks = getTasksFromLocalStorage();
-    setTasks(storedTasks);
-  }, []);
+  const { tasks, editTask, removeTask } = useTasks();
 
   // Move task to 'In Progress'
   const moveTaskToProgress = (task) => {
     const updatedTask = { ...task, status: "inprogress" };
-    editTask(updatedTask); // Update in local storage
-    setTasks((prevTasks) =>
-      prevTasks.map((t) => (t.id === task.id ? updatedTask : t))
-    );
+    editTask(updatedTask); // Update in context (will sync automatically)
   };
 
   // Move task to 'Done'
   const moveTaskToDone = (task) => {
     const updatedTask = { ...task, status: "done" };
-    editTask(updatedTask); // Update in local storage
-    setTasks((prevTasks) =>
-      prevTasks.map((t) => (t.id === task.id ? updatedTask : t))
-    );
+    editTask(updatedTask); // Update in context (will sync automatically)
   };
 
   // Delete task confirmation
@@ -46,8 +35,7 @@ const Tasks = () => {
 
   const handleDeleteConfirm = () => {
     if (taskToDelete) {
-      deleteTask(taskToDelete.id);
-      setTasks(getTasksFromLocalStorage()); // Refresh tasks after deletion
+      removeTask(taskToDelete.id); // Remove from context (will sync automatically)
       setTaskToDelete(null);
       document.getElementById("delete_modal").close();
     }
@@ -75,7 +63,7 @@ const Tasks = () => {
   const handleCloseModal = () => {
     setEditingTaskId(null);
     document.getElementById("edit_modal").close();
-    setTasks(getTasksFromLocalStorage()); // Refresh tasks after editing
+    // Tasks will automatically refresh via context
   };
 
 
