@@ -10,6 +10,9 @@ const EditForm = ({ taskId, onClose }) => {
     endDate: "",
     title: "",
     description: "",
+    priority: "medium",
+    category: "",
+    tags: [],
   });
   const startDateInputRef = useRef(null);
   const endDateInputRef = useRef(null);
@@ -33,6 +36,9 @@ const EditForm = ({ taskId, onClose }) => {
         endDate: "",
         title: "",
         description: "",
+        priority: "medium",
+        category: "",
+        tags: [],
       });
     }
   }, [taskId, tasks]);
@@ -42,6 +48,14 @@ const EditForm = ({ taskId, onClose }) => {
     setTask((prevTask) => ({
       ...prevTask,
       [name]: value,
+    }));
+  };
+
+  const handleTagsChange = (e) => {
+    const tagsArray = e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+    setTask((prevTask) => ({
+      ...prevTask,
+      tags: tagsArray,
     }));
   };
 
@@ -150,6 +164,46 @@ const EditForm = ({ taskId, onClose }) => {
             value={task.description}
             onChange={handleInputChange}
             required
+          />
+        </label>
+
+        {/* Priority and Category */}
+        <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-4">
+          <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-4 bg-white border-blue-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+            <span className="text-xs font-medium text-gray-700 mb-1.5">Priority</span>
+            <select
+              className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none"
+              name="priority"
+              value={task.priority || "medium"}
+              onChange={handleInputChange}
+            >
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </label>
+          <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-4 bg-white border-blue-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+            <span className="text-xs font-medium text-gray-700 mb-1.5">Category</span>
+            <input
+              type="text"
+              className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none"
+              placeholder="e.g., Work, Personal"
+              name="category"
+              value={task.category || ""}
+              onChange={handleInputChange}
+            />
+          </label>
+        </div>
+
+        {/* Tags */}
+        <label className="input input-bordered flex flex-col items-start w-full pl-3 sm:pl-4 bg-white border-blue-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+          <span className="text-xs font-medium text-gray-700 mb-1.5">Tags (comma separated)</span>
+          <input
+            type="text"
+            className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none"
+            placeholder="e.g., urgent, meeting, project"
+            value={Array.isArray(task.tags) ? task.tags.join(', ') : (task.tags || "")}
+            onChange={handleTagsChange}
           />
         </label>
 

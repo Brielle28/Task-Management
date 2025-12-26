@@ -28,9 +28,12 @@ const DeleteConfirmationModal = ({ taskTitle, onConfirm, onCancel }) => {
         {/* Message */}
         <div className="text-center">
           <p className="text-sm sm:text-base text-gray-600 mb-2">
-            Are you sure you want to delete this task?
+            {taskTitle && taskTitle.includes('tasks') 
+              ? `Are you sure you want to delete ${taskTitle}?`
+              : "Are you sure you want to delete this task?"
+            }
           </p>
-          {taskTitle && (
+          {taskTitle && !taskTitle.includes('tasks') && (
             <p className="text-sm font-semibold text-gray-800 bg-gray-50 px-3 py-2 rounded-lg inline-block">
               "{taskTitle}"
             </p>

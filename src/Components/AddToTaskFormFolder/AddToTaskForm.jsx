@@ -8,6 +8,9 @@ const TaskForm = () => {
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [priority, setPriority] = useState("medium");
+  const [category, setCategory] = useState("");
+  const [tags, setTags] = useState("");
   const startDateInputRef = useRef(null);
   const endDateInputRef = useRef(null);
 
@@ -29,6 +32,9 @@ const TaskForm = () => {
       startDate,
       endDate,
       status: "todo",
+      priority: priority || "medium",
+      category: category.trim() || "",
+      tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0),
     };
 
     console.log(newTask);
@@ -40,6 +46,9 @@ const TaskForm = () => {
       setDescription("");
       setStartDate("");
       setEndDate("");
+      setPriority("medium");
+      setCategory("");
+      setTags("");
 
       // Close the modal
       document.getElementById('my_modal_3').close();
@@ -125,6 +134,44 @@ const TaskForm = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
+            />
+          </label>
+
+          {/* Priority and Category */}
+          <div className="flex flex-col sm:flex-row items-start justify-between w-full gap-3 sm:gap-4">
+            <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-2 bg-white">
+              <span className="text-xs text-gray-600 mb-1">Priority</span>
+              <select
+                className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none"
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
+              >
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </label>
+            <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-2 bg-white">
+              <span className="text-xs text-gray-600 mb-1">Category</span>
+              <input
+                type="text"
+                className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none"
+                placeholder="e.g., Work, Personal"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+              />
+            </label>
+          </div>
+
+          {/* Tags */}
+          <label className="input input-bordered flex flex-col items-start w-full pl-3 sm:pl-2 bg-white">
+            <span className="text-xs text-gray-600 mb-1">Tags (comma separated)</span>
+            <input
+              type="text"
+              className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none"
+              placeholder="e.g., urgent, meeting, project"
+              value={tags}
+              onChange={(e) => setTags(e.target.value)}
             />
           </label>
 
