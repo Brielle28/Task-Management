@@ -100,14 +100,14 @@ const Calendar = () => {
   ];
 
   return (
-    <div className="flex flex-col w-full max-w-5xl mx-auto pt-2 sm:pt-4 lg:pt-10 gap-3 sm:gap-4 lg:gap-7 px-2 sm:px-4">
+    <div className="flex flex-col w-full pt-2 sm:pt-4 lg:pt-10 gap-3 sm:gap-4 lg:gap-7 px-2 sm:px-4 lg:px-0">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full gap-3 sm:gap-4">
         <h1 className="text-lg sm:text-xl lg:text-2xl xl:text-3xl font-bold text-blue-600">My Schedule</h1>
         <div className="w-full sm:w-auto">
           <Button/>
         </div>
       </div>
-      <div className="bg-white p-2 sm:p-3 lg:p-4 xl:p-5 rounded-lg sm:rounded-xl lg:rounded-[10px] shadow-lg border border-gray-100">
+      <div className="bg-white p-2 sm:p-3 lg:p-4 xl:p-5 rounded-lg sm:rounded-xl lg:rounded-[10px] shadow-lg border border-gray-100 w-full">
         <div className="flex justify-between items-center mb-2 sm:mb-3 lg:mb-4 px-1">
           <button 
             onClick={handlePreviousMonth} 
