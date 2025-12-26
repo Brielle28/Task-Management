@@ -111,6 +111,7 @@ const TaskStatistics = () => {
       completionRate,
       priorityBreakdown,
       avgCompletionTime,
+      completedWithDatesCount: completedWithDates.length,
       tasksThisWeek: tasksThisWeek.length,
       doneThisWeek: doneThisWeek.length,
       tasksThisMonth: tasksThisMonth.length,
@@ -150,9 +151,11 @@ const TaskStatistics = () => {
             <span className="text-xs sm:text-sm text-gray-600 font-medium">Avg. Completion</span>
           </div>
           <div className="text-2xl sm:text-3xl font-bold text-gray-800">
-            {stats.avgCompletionTime > 0 ? `${stats.avgCompletionTime}d` : "N/A"}
+            {stats.completedWithDatesCount > 0 ? `${stats.avgCompletionTime}d` : "0d"}
           </div>
-          <div className="text-xs text-gray-500 mt-1">Days per task</div>
+          <div className="text-xs text-gray-500 mt-1">
+            {stats.completedWithDatesCount > 0 ? "Days per task" : "No completed tasks"}
+          </div>
         </div>
 
         {/* Weekly Trend */}
