@@ -1,10 +1,12 @@
 import { useEffect, useState, useRef } from "react";
 import { useTasks } from "../../Context/TaskContext";
+import { useToast } from "../../Context/ToastContext";
 import { getTasksFromLocalStorage } from "../../Services/taskService";
 import { SlCalender } from "react-icons/sl";
 
 const EditForm = ({ taskId, onClose }) => {
-  const { tasks, editTask } = useTasks();
+  const { tasks, editTask, trackTaskView } = useTasks();
+  const { success, error } = useToast();
   const [task, setTask] = useState({
     startDate: "",
     endDate: "",
@@ -29,6 +31,10 @@ const EditForm = ({ taskId, onClose }) => {
     const foundTask = tasks.find((t) => t.id === taskId);
     if (foundTask) {
       setTask(foundTask);
+      // Track task view when modal opens
+      if (trackTaskView) {
+        trackTaskView(taskId);
+      }
     } else {
       console.error(`Task with id ${taskId} not found`);
       setTask({
@@ -41,7 +47,7 @@ const EditForm = ({ taskId, onClose }) => {
         tags: [],
       });
     }
-  }, [taskId, tasks]);
+  }, [taskId, tasks, trackTaskView]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -51,20 +57,15 @@ const EditForm = ({ taskId, onClose }) => {
     }));
   };
 
-  const handleTagsChange = (e) => {
-    const tagsArray = e.target.value.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
-    setTask((prevTask) => ({
-      ...prevTask,
-      tags: tagsArray,
-    }));
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const success = editTask({ ...task, id: taskId });
-    if (success) {
-      console.log("Task updated:", task);
+    const result = editTask({ ...task, id: taskId });
+    if (result) {
+      success("Task updated successfully!");
       onClose();
+    } else {
+      error("Failed to update task. Please try again.");
     }
   };
 
@@ -182,29 +183,56 @@ const EditForm = ({ taskId, onClose }) => {
               <option value="high">High</option>
             </select>
           </label>
-          <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-4 bg-white border-blue-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
-            <span className="text-xs font-medium text-gray-700 mb-1.5">Category</span>
-            <input
-              type="text"
-              className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none"
-              placeholder="e.g., Work, Personal"
+          <label className="form-control w-full sm:w-[48%]">
+            <span className="label-text text-xs font-medium text-gray-700 mb-1.5">Category</span>
+            <select
+              className="select select-bordered w-full bg-white border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-xs sm:text-sm"
               name="category"
               value={task.category || ""}
               onChange={handleInputChange}
-            />
+            >
+              <option value="">Select a category</option>
+              <option value="Work">Work</option>
+              <option value="Personal">Personal</option>
+              <option value="Health">Health</option>
+              <option value="Education">Education</option>
+              <option value="Finance">Finance</option>
+              <option value="Shopping">Shopping</option>
+              <option value="Travel">Travel</option>
+              <option value="Family">Family</option>
+              <option value="Hobby">Hobby</option>
+              <option value="Other">Other</option>
+            </select>
           </label>
         </div>
 
         {/* Tags */}
-        <label className="input input-bordered flex flex-col items-start w-full pl-3 sm:pl-4 bg-white border-blue-200 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
-          <span className="text-xs font-medium text-gray-700 mb-1.5">Tags (comma separated)</span>
-          <input
-            type="text"
-            className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none"
-            placeholder="e.g., urgent, meeting, project"
-            value={Array.isArray(task.tags) ? task.tags.join(', ') : (task.tags || "")}
-            onChange={handleTagsChange}
-          />
+        <label className="form-control w-full">
+          <span className="label-text text-xs font-medium text-gray-700 mb-1.5">Tags</span>
+          <select
+            className="select select-bordered w-full bg-white border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-xs sm:text-sm"
+            name="tags"
+            value={Array.isArray(task.tags) ? task.tags[0] || "" : (task.tags || "")}
+            onChange={(e) => {
+              const selectedTag = e.target.value;
+              setTask((prevTask) => ({
+                ...prevTask,
+                tags: selectedTag ? [selectedTag] : [],
+              }));
+            }}
+          >
+            <option value="">Select a tag</option>
+            <option value="urgent">Urgent</option>
+            <option value="important">Important</option>
+            <option value="meeting">Meeting</option>
+            <option value="project">Project</option>
+            <option value="deadline">Deadline</option>
+            <option value="review">Review</option>
+            <option value="follow-up">Follow-up</option>
+            <option value="client">Client</option>
+            <option value="team">Team</option>
+            <option value="personal">Personal</option>
+          </select>
         </label>
 
         {/* Submit Button */}

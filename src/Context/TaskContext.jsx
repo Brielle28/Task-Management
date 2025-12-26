@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { getTasksFromLocalStorage, saveTasksToLocalStorage, addTask as addTaskService, editTask as editTaskService, deleteTask as deleteTaskService } from '../Services/taskService';
+import { getTasksFromLocalStorage, saveTasksToLocalStorage, addTask as addTaskService, editTask as editTaskService, deleteTask as deleteTaskService, trackTaskView as trackTaskViewService, getRecentlyOpenedTasks } from '../Services/taskService';
 
 const TaskContext = createContext();
 
@@ -76,6 +76,17 @@ export const TaskProvider = ({ children }) => {
     loadTasks();
   };
 
+  // Track when a task is viewed
+  const trackTaskView = (taskId) => {
+    try {
+      trackTaskViewService(taskId);
+      const updatedTasks = getTasksFromLocalStorage();
+      setTasks(updatedTasks);
+    } catch (error) {
+      console.error('Error tracking task view:', error);
+    }
+  };
+
   const value = {
     tasks,
     isLoading,
@@ -83,6 +94,8 @@ export const TaskProvider = ({ children }) => {
     editTask,
     removeTask,
     refreshTasks,
+    trackTaskView,
+    getRecentlyOpenedTasks,
   };
 
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;

@@ -1,9 +1,11 @@
 import { useState, useRef } from "react";
 import { useTasks } from "../../Context/TaskContext";
+import { useToast } from "../../Context/ToastContext";
 import { SlCalender } from "react-icons/sl";
 
 const TaskForm = () => {
   const { addTask } = useTasks();
+  const { success, error } = useToast();
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [startDate, setStartDate] = useState("");
@@ -34,13 +36,14 @@ const TaskForm = () => {
       status: "todo",
       priority: priority || "medium",
       category: category.trim() || "",
-      tags: tags.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0),
+      tags: tags ? [tags.trim()] : [],
     };
 
     console.log(newTask);
-    const success = addTask(newTask);
+    const result = addTask(newTask);
     
-    if (success) {
+    if (result) {
+      success("Task created successfully!");
       // Clear the form fields
       setTitle("");
       setDescription("");
@@ -52,6 +55,8 @@ const TaskForm = () => {
 
       // Close the modal
       document.getElementById('my_modal_3').close();
+    } else {
+      error("Failed to create task. Please try again.");
     }
   };
 
@@ -151,28 +156,48 @@ const TaskForm = () => {
                 <option value="high">High</option>
               </select>
             </label>
-            <label className="input input-bordered flex flex-col items-start w-full sm:w-[48%] pl-3 sm:pl-2 bg-white">
-              <span className="text-xs text-gray-600 mb-1">Category</span>
-              <input
-                type="text"
-                className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none"
-                placeholder="e.g., Work, Personal"
+            <label className="form-control w-full sm:w-[48%]">
+              <span className="label-text text-xs text-gray-600 mb-1">Category</span>
+              <select
+                className="select select-bordered w-full bg-white border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-xs sm:text-sm"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-              />
+              >
+                <option value="">Select a category</option>
+                <option value="Work">Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Health">Health</option>
+                <option value="Education">Education</option>
+                <option value="Finance">Finance</option>
+                <option value="Shopping">Shopping</option>
+                <option value="Travel">Travel</option>
+                <option value="Family">Family</option>
+                <option value="Hobby">Hobby</option>
+                <option value="Other">Other</option>
+              </select>
             </label>
           </div>
 
           {/* Tags */}
-          <label className="input input-bordered flex flex-col items-start w-full pl-3 sm:pl-2 bg-white">
-            <span className="text-xs text-gray-600 mb-1">Tags (comma separated)</span>
-            <input
-              type="text"
-              className="grow text-xs sm:text-sm w-full bg-white border-0 focus:outline-none"
-              placeholder="e.g., urgent, meeting, project"
+          <label className="form-control w-full">
+            <span className="label-text text-xs text-gray-600 mb-1">Tags</span>
+            <select
+              className="select select-bordered w-full bg-white border-blue-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all text-xs sm:text-sm"
               value={tags}
               onChange={(e) => setTags(e.target.value)}
-            />
+            >
+              <option value="">Select a tag</option>
+              <option value="urgent">Urgent</option>
+              <option value="important">Important</option>
+              <option value="meeting">Meeting</option>
+              <option value="project">Project</option>
+              <option value="deadline">Deadline</option>
+              <option value="review">Review</option>
+              <option value="follow-up">Follow-up</option>
+              <option value="client">Client</option>
+              <option value="team">Team</option>
+              <option value="personal">Personal</option>
+            </select>
           </label>
 
           {/* Submit Button */}

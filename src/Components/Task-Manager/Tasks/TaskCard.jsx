@@ -2,7 +2,7 @@ import { MdDeleteForever } from "react-icons/md";
 import { FaFlag, FaTag } from "react-icons/fa";
 import EditButton from "../../EditComponent/EditButton";
 
-const TaskCard = ({ task, moveTaskToProgress, moveTaskToDone, deleteTask, onEdit, isSelected, onSelect }) => {
+const TaskCard = ({ task, moveTaskToProgress, moveTaskToDone, deleteTask, onEdit, onView, isSelected, onSelect }) => {
   const priorityColors = {
     high: "bg-red-100 text-red-700 border-red-300",
     medium: "bg-yellow-100 text-yellow-700 border-yellow-300",
@@ -16,9 +16,12 @@ const TaskCard = ({ task, moveTaskToProgress, moveTaskToDone, deleteTask, onEdit
   };
 
   return (
-    <div className={`card bg-white rounded-md sm:rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border ${
-      isSelected ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-100'
-    }`}>
+    <div 
+      className={`card bg-white rounded-md sm:rounded-lg shadow-sm hover:shadow-md transition-all duration-200 border cursor-pointer ${
+        isSelected ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-100'
+      }`}
+      onClick={() => onView && onView(task.id)}
+    >
       <div className="card-body p-2.5 sm:p-3 md:p-4 flex-col items-start justify-center gap-1.5 sm:gap-2">
         <div className="flex flex-row items-start justify-between w-full gap-1.5 sm:gap-2">
           <div className="flex items-start gap-1.5 sm:gap-2 flex-1 min-w-0">
@@ -55,7 +58,10 @@ const TaskCard = ({ task, moveTaskToProgress, moveTaskToDone, deleteTask, onEdit
           <div className="flex gap-1 sm:gap-2 flex-shrink-0">
             <EditButton taskId={task.id} onEdit={onEdit} />
             <button 
-              onClick={() => deleteTask(task.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                deleteTask(task.id);
+              }}
               className="hover:opacity-70 transition-opacity p-0.5"
               aria-label="Delete task"
             >
@@ -87,7 +93,10 @@ const TaskCard = ({ task, moveTaskToProgress, moveTaskToDone, deleteTask, onEdit
         {task.status === "todo" && (
           <button
             className="mt-1.5 sm:mt-2 px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs md:text-sm text-white bg-blue-600 hover:bg-blue-700 font-roboto font-semibold rounded-md transition-colors duration-200 w-full sm:w-auto"
-            onClick={() => moveTaskToProgress(task)}
+            onClick={(e) => {
+              e.stopPropagation();
+              moveTaskToProgress(task);
+            }}
           >
             Start
           </button>
@@ -95,7 +104,10 @@ const TaskCard = ({ task, moveTaskToProgress, moveTaskToDone, deleteTask, onEdit
         {task.status === "inprogress" && (
           <button
             className="mt-1.5 sm:mt-2 px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs md:text-sm text-white bg-yellow-500 hover:bg-yellow-600 font-roboto font-semibold rounded-md transition-colors duration-200 w-full sm:w-auto"
-            onClick={() => moveTaskToDone(task)}
+            onClick={(e) => {
+              e.stopPropagation();
+              moveTaskToDone(task);
+            }}
           >
             Done
           </button>

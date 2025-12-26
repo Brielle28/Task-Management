@@ -11,7 +11,7 @@ const Aside = ({ onClose = null }) => {
   };
 
   return (
-    <aside className="h-full lg:h-screen overflow-y-auto bg-white w-full">
+    <aside className="h-full bg-white w-full">
       <div className="flex flex-col items-start justify-start w-full gap-6 px-4 lg:gap-8 xl:gap-10 lg:px-4 xl:px-6 py-4 lg:py-0">
         <div className="flex flex-row items-center gap-2 w-full">
           <img src="/diamond3.png" alt="logo" className="size-6 lg:size-7 xl:size-[26px] mt-1 lg:mt-2 flex-shrink-0" />

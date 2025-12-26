@@ -1,6 +1,6 @@
 import TaskCard from "../Tasks/TaskCard";
 
-const TaskColumn = ({ title, tasks, color, bg, icon, moveTaskToProgress, moveTaskToDone, deleteTask, onEdit, selectedTasks, onSelectTask }) => (
+const TaskColumn = ({ title, tasks, color, bg, icon, moveTaskToProgress, moveTaskToDone, deleteTask, onEdit, onView, selectedTasks, onSelectTask }) => (
   <div className={`w-full md:flex-1 md:flex-shrink-0 min-w-0 max-w-full px-2 sm:px-3 md:px-2 lg:px-3 xl:px-4 pt-3 sm:pt-4 pb-3 sm:pb-4 ${bg} rounded-lg sm:rounded-xl shadow-sm`}>
     <h2 className={`flex flex-row items-center justify-start text-sm sm:text-base md:text-lg font-semibold mb-3 sm:mb-4 px-1 sm:px-2 ${color}`}>
       {icon}
@@ -19,6 +19,7 @@ const TaskColumn = ({ title, tasks, color, bg, icon, moveTaskToProgress, moveTas
         moveTaskToDone={moveTaskToDone}
         deleteTask={deleteTask}
         onEdit={onEdit}
+        onView={onView}
             isSelected={selectedTasks?.includes(task.id)}
             onSelect={onSelectTask}
       />

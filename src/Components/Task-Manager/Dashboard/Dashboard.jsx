@@ -1,6 +1,9 @@
 import RingUpBoxes from "./RingUpBoxes";
 import DashboardHistory from "./DashboardHistory";
+import TaskStatistics from "./TaskStatistics";
+import UpcomingDeadlines from "./UpcomingDeadlines";
 import Button from "../../AddToTaskFormFolder/Button";
+
 const Dashboard = () => {
   return (
     <div className="flex flex-col items-start justify-start min-h-screen mt-4 sm:mt-6 w-full px-2 sm:px-4 lg:px-0">
@@ -24,8 +27,18 @@ const Dashboard = () => {
         <RingUpBoxes />
       </div>
 
+      {/* Task Statistics */}
+      <div className="mt-6 sm:mt-8 lg:mt-[30px] w-full">
+        <TaskStatistics />
+      </div>
+
+      {/* Upcoming Deadlines */}
+      <div className="mt-6 sm:mt-8 lg:mt-[30px] w-full">
+        <UpcomingDeadlines />
+      </div>
+
       {/* dash board history  */}
-      <div className="mt-6 sm:mt-8 lg:mt-[50px] xl:mt-[50px] flex w-full">
+      <div className="mt-6 sm:mt-8 lg:mt-[30px] xl:mt-[30px] flex w-full">
         <DashboardHistory />
       </div>
     </div>

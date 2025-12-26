@@ -7,7 +7,7 @@ const Layout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <div className="flex flex-col lg:flex-row items-start justify-start text-start bg-white w-full min-h-screen rounded-[20px] px-4 sm:px-6 lg:px-4 xl:px-6 2xl:px-8">
+    <div className="flex flex-col lg:flex-row items-start justify-start text-start bg-white w-full h-screen overflow-hidden">
       {/* Mobile Menu Button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -17,11 +17,11 @@ const Layout = () => {
         {isMobileMenuOpen ? <HiX size={24} /> : <HiMenu size={24} />}
       </button>
 
-      {/* Sidebar */}
+      {/* Sidebar - Fixed on desktop */}
       <div
         className={`${
           isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 fixed lg:static inset-y-0 left-0 z-40 w-64 lg:w-[220px] xl:w-[240px] 2xl:w-[260px] pt-8 lg:pt-[25px] bg-white lg:bg-transparent border-r lg:border-r-2 border-gray-200 transition-transform duration-300 ease-in-out lg:transition-none`}
+        } lg:translate-x-0 fixed lg:fixed inset-y-0 left-0 z-40 w-64 lg:w-[220px] xl:w-[240px] 2xl:w-[260px] pt-8 lg:pt-[25px] bg-white border-r lg:border-r-2 border-gray-200 transition-transform duration-300 ease-in-out lg:transition-none overflow-y-auto`}
       >
         <Aside onClose={() => setIsMobileMenuOpen(false)} />
       </div>
@@ -34,8 +34,8 @@ const Layout = () => {
         />
       )}
 
-      {/* Main Content */}
-      <div className="w-full lg:w-[calc(100%-220px)] xl:w-[calc(100%-240px)] 2xl:w-[calc(100%-260px)] pt-16 lg:pt-0 bg-white lg:pl-6 xl:pl-8 2xl:pl-10">
+      {/* Main Content - Scrollable */}
+      <div className="w-full pt-16 lg:pt-0 lg:ml-[220px] xl:ml-[240px] 2xl:ml-[260px] bg-white lg:pl-6 xl:pl-8 2xl:pl-10 h-full overflow-y-auto">
         <Outlet />
       </div>
     </div>

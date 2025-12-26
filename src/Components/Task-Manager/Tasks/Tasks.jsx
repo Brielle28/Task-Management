@@ -6,13 +6,16 @@ import { CiSearch } from "react-icons/ci";
 import { MdDeleteSweep, MdCheckCircle } from "react-icons/md";
 import TaskColumn from "../Tasks/TaskColumn"
 import { useTasks } from "../../../Context/TaskContext";
+import { useToast } from "../../../Context/ToastContext";
 import Button from "../../AddToTaskFormFolder/Button";
 import EditButton from "../../EditComponent/EditButton";
 import EditForm from "../../EditComponent/EditForm";
 import DeleteConfirmationModal from "../../EditComponent/DeleteConfirmationModal";
+import TaskViewModal from "./TaskViewModal";
 
 const Tasks = () => {
   const { tasks, editTask, removeTask } = useTasks();
+  const { success, error } = useToast();
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("date"); // date, priority, title, status
   const [sortOrder, setSortOrder] = useState("asc"); // asc, desc
@@ -22,13 +25,19 @@ const Tasks = () => {
   // Move task to 'In Progress'
   const moveTaskToProgress = (task) => {
     const updatedTask = { ...task, status: "inprogress" };
-    editTask(updatedTask); // Update in context (will sync automatically)
+    const result = editTask(updatedTask);
+    if (result) {
+      success("Task moved to In Progress!");
+    }
   };
 
   // Move task to 'Done'
   const moveTaskToDone = (task) => {
     const updatedTask = { ...task, status: "done" };
-    editTask(updatedTask); // Update in context (will sync automatically)
+    const result = editTask(updatedTask);
+    if (result) {
+      success("Task marked as Done!");
+    }
   };
 
   // Delete task confirmation
@@ -47,7 +56,12 @@ const Tasks = () => {
         handleBulkDeleteConfirm();
       } else {
         // Single delete
-        removeTask(taskToDelete.id);
+        const result = removeTask(taskToDelete.id);
+        if (result) {
+          success("Task deleted successfully!");
+        } else {
+          error("Failed to delete task. Please try again.");
+        }
         setTaskToDelete(null);
         document.getElementById("delete_modal").close();
       }
@@ -145,20 +159,24 @@ const Tasks = () => {
   };
 
   const handleBulkStatusChange = (newStatus) => {
+    const count = selectedTasks.length;
     selectedTasks.forEach((taskId) => {
       const task = tasks.find((t) => t.id === taskId);
       if (task) {
         editTask({ ...task, status: newStatus });
       }
     });
+    success(`${count} task${count !== 1 ? 's' : ''} status updated!`);
     setSelectedTasks([]);
     setShowBulkActions(false);
   };
 
   const handleBulkDeleteConfirm = () => {
+    const count = selectedTasks.length;
     selectedTasks.forEach((taskId) => {
       removeTask(taskId);
     });
+    success(`${count} task${count !== 1 ? 's' : ''} deleted successfully!`);
     setSelectedTasks([]);
     setShowBulkActions(false);
     setTaskToDelete(null);
@@ -168,16 +186,27 @@ const Tasks = () => {
   //for edit functionality 
   // const [tasks, setTasks] = useState(getTasksFromLocalStorage());
   const [editingTaskId, setEditingTaskId] = useState(null);
+  const [viewingTaskId, setViewingTaskId] = useState(null);
 
   const handleEditClick = (taskId) => {
     setEditingTaskId(taskId);
     document.getElementById("edit_modal").showModal();
   };
 
-  const handleCloseModal = () => {
+  const handleViewClick = (taskId) => {
+    setViewingTaskId(taskId);
+    document.getElementById("view_modal").showModal();
+  };
+
+  const handleCloseEditModal = () => {
     setEditingTaskId(null);
     document.getElementById("edit_modal").close();
     // Tasks will automatically refresh via context
+  };
+
+  const handleCloseViewModal = () => {
+    setViewingTaskId(null);
+    document.getElementById("view_modal").close();
   };
 
 
@@ -300,6 +329,7 @@ const Tasks = () => {
             moveTaskToProgress={moveTaskToProgress}
             deleteTask={handleDeleteClick}
             onEdit={handleEditClick}
+            onView={handleViewClick}
             selectedTasks={selectedTasks}
             onSelectTask={handleSelectTask}
           />
@@ -313,6 +343,7 @@ const Tasks = () => {
             moveTaskToDone={moveTaskToDone}
             deleteTask={handleDeleteClick}
             onEdit={handleEditClick}
+            onView={handleViewClick}
             selectedTasks={selectedTasks}
             onSelectTask={handleSelectTask}
           />
@@ -325,15 +356,21 @@ const Tasks = () => {
             icon={<IoIosCheckboxOutline className="mt-[6px] mr-2" />}
             deleteTask={handleDeleteClick}
             onEdit={handleEditClick}
+            onView={handleViewClick}
             selectedTasks={selectedTasks}
             onSelectTask={handleSelectTask}
           />
         </div>
       </div>
     </div>
-    <dialog id="edit_modal" className="modal">
+    <dialog id="view_modal" className="modal">
+        {viewingTaskId && (
+          <TaskViewModal taskId={viewingTaskId} onClose={handleCloseViewModal} />
+        )}
+      </dialog>
+      <dialog id="edit_modal" className="modal">
         {editingTaskId && (
-          <EditForm taskId={editingTaskId} onClose={handleCloseModal} />
+          <EditForm taskId={editingTaskId} onClose={handleCloseEditModal} />
         )}
       </dialog>
     <dialog id="delete_modal" className="modal">
